@@ -26,7 +26,7 @@ class AuthService {
 
     static async register(data) {
         try {
-            const { username, email, password } = data;
+            const { username, email, password, role } = data;
             //check email uniqueness
             const checkUser = await User.findOne({ where: { email } });
             if (!checkUser) {
@@ -34,10 +34,10 @@ class AuthService {
                 const hashedPassword = encryptPwd(password);
                
                 // Create user
-                const user = await User.create({ username, email, password: hashedPassword });
+                const user = await User.create({ username, email, password: hashedPassword, role });
                 
                 // Create profile for the user
-                const profile = await Profile.create({ userId: user.id });
+                const profile = await Profile.create({ UserId: user.id });
 
                 //Generate JWT token
                 const access_token = generateToken(user, profile);
